@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}All Expenses{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>All Expenses</h4>
+  <a href="/add" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Add</a>
+</div>
+
+<!-- Filters -->
+<div class="card p-3 mb-3">
+  <form method="GET" class="row g-2 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label small">Month (YYYY-MM)</label>
+      <input name="month" class="form-control form-control-sm" value="{{ month }}" placeholder="e.g. 2024-06">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small">Category</label>
+      <select name="category" class="form-select form-select-sm">
+        <option value="">All</option>
+        {% for c in categories %}
+        <option {% if c == category %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary btn-sm w-100">Filter</button>
+    </div>
+    <div class="col-md-2">
+      <a href="/expenses" class="btn btn-outline-secondary btn-sm w-100">Clear</a>
+    </div>
+  </form>
+</div>
+
+{% if expenses %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Title</th><th>Category</th><th>Date</th><th>Notes</th>
+          <th class="text-end">Amount</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in expenses %}
+        <tr>
+          <td class="fw-semibold">{{ e['title'] }}</td>
+          <td><span class="badge bg-secondary">{{ e['category'] }}</span></td>
+          <td>{{ e['date'] }}</td>
+          <td class="text-muted small">{{ e['notes'] or '—' }}</td>
+          <td class="text-end text-danger fw-bold">₹{{ "%.2f"|format(e['amount']) }}</td>
+          <td>
+            <a href="/edit/{{ e['id'] }}" class="btn btn-sm btn-outline-primary py-0">Edit</a>
+            <form method="POST" action="/delete/{{ e['id'] }}" class="d-inline"
+                  onsubmit="return confirm('Delete this expense?')">
+              <button class="btn btn-sm btn-outline-danger py-0">Del</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot class="table-light">
+        <tr>
+          <td colspan="4" class="fw-bold">Total</td>
+          <td class="text-end fw-bold text-danger">₹{{ "%.2f"|format(total) }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-info">No expenses found. <a href="/add">Add your first expense!</a></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Monthly Summary{% endblock %}
+{% block content %}
+<h4 class="mb-4">Monthly Summary</h4>
+{% if monthly %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr><th>Month</th><th class="text-center">Transactions</th><th class="text-end">Total Spent</th></tr>
+      </thead>
+      <tbody>
+        {% for row in monthly %}
+        <tr>
+          <td><a href="/expenses?month={{ row['month'] }}">{{ row['month'] }}</a></td>
+          <td class="text-center">{{ row['count'] }}</td>
+          <td class="text-end text-danger fw-bold">₹{{ "%.2f"|format(row['total']) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-info">No expenses recorded yet. <a href="/add">Start tracking!</a></div>
+{% endif %}
+{% endblock %}

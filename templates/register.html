@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Register — Expense Tracker{% endblock %}
+{% block auth_content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-4">
+    <div class="card p-4">
+      <h4 class="mb-3 text-center"><i class="bi bi-wallet2 text-primary"></i> Create Account</h4>
+      <form method="POST" autocomplete="off">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control" required autofocus>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password <small class="text-muted">(min 6 chars)</small></label>
+          <input name="password" type="password" class="form-control" required minlength="6" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary w-100">Create Account</button>
+      </form>
+      <hr>
+      <p class="text-center mb-0">Already have an account? <a href="/login">Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
